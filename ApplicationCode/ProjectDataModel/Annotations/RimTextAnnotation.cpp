@@ -25,10 +25,13 @@
 #include "RimAnnotationGroupCollection.h"
 #include "RimAnnotationTextAppearance.h"
 
+#include "WellPathCommands/RicCreateWellTargetsPickEventHandler.h"
 #include "AnnotationCommands/RicTextAnnotation3dEditor.h"
 
+#include "cafCmdFeatureManager.h"
 #include "cafPdmUiTextEditor.h"
 #include "cafPdmUiTreeOrdering.h"
+#include "cafPdmUiVec3dEditor.h"
 
 CAF_PDM_SOURCE_INIT(RimTextAnnotation, "RimTextAnnotation");
 
@@ -42,7 +45,9 @@ RimTextAnnotation::RimTextAnnotation()
     this->setUi3dEditorTypeName(RicTextAnnotation3dEditor::uiEditorTypeName());
 
     CAF_PDM_InitField(&m_anchorPointXyd, "AnchorPointXyd", Vec3d::ZERO, "Anchor Point", "", "", "");
+    m_anchorPointXyd.uiCapability()->setUiEditorTypeName(caf::PdmUiVec3dEditor::uiEditorTypeName());
     CAF_PDM_InitField(&m_labelPointXyd, "LabelPointXyd", Vec3d::ZERO, "Label Point", "", "", "");
+    m_labelPointXyd.uiCapability()->setUiEditorTypeName(caf::PdmUiVec3dEditor::uiEditorTypeName());
     CAF_PDM_InitField(&m_text, "Text", QString("(New text)"), "Text", "", "", "");
     m_text.uiCapability()->setUiEditorTypeName(caf::PdmUiTextEditor::uiEditorTypeName());
 
@@ -195,6 +200,22 @@ RimAnnotationTextAppearance* RimTextAnnotation::appearance() const
 caf::PdmFieldHandle* RimTextAnnotation::objectToggleField()
 {
     return &m_isActive;
+}
+
+//--------------------------------------------------------------------------------------------------
+///
+//--------------------------------------------------------------------------------------------------
+void RimTextAnnotation::defineEditorAttribute(const caf::PdmFieldHandle* field,
+                                              QString                    uiConfigName,
+                                              caf::PdmUiEditorAttribute* attribute)
+{
+    if (field == &m_anchorPointXyd)
+    {
+        caf::CmdFeatureManager* cmdFeatureMgr = caf::CmdFeatureManager::instance();
+
+        caf::PdmUiVec3dEditorAttribute* attr = dynamic_cast<caf::PdmUiVec3dEditorAttribute*>(attribute);
+        //attr->action = cmdFeatureMgr->action("RicStart
+    }
 }
 
 //--------------------------------------------------------------------------------------------------

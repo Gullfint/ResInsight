@@ -34,6 +34,7 @@
 #include "cvfObject.h"
 #include "cvfVector3.h"
 
+#include <memory>
 #include <vector>
 
 class QString;
@@ -72,6 +73,9 @@ protected:
     void fieldChangedByUi(const caf::PdmFieldHandle* changedField, const QVariant& oldValue, const QVariant& newValue) override;
     caf::PdmFieldHandle* userDescriptionField() override;
     caf::PdmFieldHandle* objectToggleField() override;
+    void                 defineEditorAttribute(const caf::PdmFieldHandle* field,
+                                               QString                    uiConfigName,
+                                               caf::PdmUiEditorAttribute* attribute) override;
 
 private:
     friend class RicTextAnnotation3dEditor;
@@ -86,5 +90,6 @@ private:
     caf::PdmChildField<RimAnnotationTextAppearance*> m_textAppearance;
 
     caf::PdmProxyValueField<QString> m_nameProxy;
+
 };
 
